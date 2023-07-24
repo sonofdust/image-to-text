@@ -59,63 +59,96 @@ const ImageUploader: React.FC = () => {
 
   return (
     <div style={{height: "70vh", overflowY: "scroll"}}>
-      <Grid container rowSpacing={1} columnSpacing={{xs: 1, sm: 2, md: 3}}>
-        <Grid container item xs={12} alignItems="center">
-          <Item>
-            <input
-              accept="image/*"
-              id="image-upload"
-              type="file"
-              style={{display: "none"}}
-              onChange={handleImageChange}
+      <Grid container spacing={2}>
+        {/* First Grid Item */}
+        <Grid item xs={6} container alignItems="center" justifyContent="center">
+          <input
+            accept="image/*"
+            id="image-upload"
+            type="file"
+            style={{display: "none"}}
+            onChange={handleImageChange}
+          />
+          <label htmlFor="image-upload">
+            <Button variant="contained" component="span">
+              {loading ? (
+                <CircularProgress size={24} color="inherit" />
+              ) : (
+                "Upload Image"
+              )}
+            </Button>
+          </label>
+        </Grid>
+
+        {/* Second Grid Item */}
+        <Grid item xs={6} container alignItems="center" justifyContent="center">
+          {selectedImage && (
+            <Typography
+              variant="body1"
+              style={{marginTop: "1rem", textAlign: "center"}}
+            >
+              {selectedImage}
+            </Typography>
+          )}
+        </Grid>
+      </Grid>
+      <Grid container spacing={2} alignItems="center" justifyContent="center">
+        <Grid item xs={6}>
+          {/* Your content for the second grid item */}
+          {selectedImage && (
+            <Grid
+              item
+              container
+              style={{
+                marginTop: "5rem",
+                alignItems: "flex-start",
+                justifyContent: "center",
+              }}
+            >
+              <div style={{display: "flex", justifyContent: "center"}}>
+                <img
+                  src={selectedImage}
+                  alt="Uploaded"
+                  style={{maxWidth: "60%", width: "50vw"}}
+                />
+              </div>
+            </Grid>
+          )}
+        </Grid>
+        <Grid item xs={6}>
+          {textResult && (
+            // <TextField
+            //   id="outlined-multiline-static"
+            //   label="Multiline"
+            //   value={textResult}
+            //   multiline
+            //   rows={4}
+            //   defaultValue="Default Value"
+            // />
+
+            <TextField
+              id="outlined-multiline-static"
+              label="Multiline"
+              value={textResult}
+              multiline
+              rows={4}
+              defaultValue="Default Value"
+              variant="outlined"
+              style={{
+                width: "50vw",
+                height: "50vh",
+              }}
             />
-            <label htmlFor="image-upload">
-              <Button variant="contained" component="span">
-                {loading ? (
-                  <CircularProgress size={24} color="inherit" />
-                ) : (
-                  "Upload Image"
-                )}
-              </Button>
-            </label>
-            {selectedImage && (
-              <Typography
-                variant="body1"
-                style={{marginTop: "1rem", textAlign: "center"}}
-              >
-                {selectedImage}
-              </Typography>
-            )}
-          </Item>
-        </Grid>
-        <Grid item xs={6}>
-          <Item>
-            {selectedImage && (
-              <Grid item style={{marginTop: "5rem"}}>
-                <div style={{display: "flex", justifyContent: "center"}}>
-                  <img
-                    src={selectedImage}
-                    alt="Uploaded"
-                    style={{maxWidth: "60%", width: "50vw"}}
-                  />
-                </div>
-              </Grid>
-            )}
-          </Item>
-        </Grid>
-        <Grid item xs={6}>
-          <Item>
-            {textResult && (
-              <TextField
-                label="Text Result"
-                multiline
-                value={textResult}
-                fullWidth
-                variant="outlined"
-                size="small" // Adjust the size of the TextField
-              />
-            )}
-          </Item>
+
+            // <TextField
+            //   label="Text Result"
+            //   multiline
+            //   value={textResult}
+            //   fullWidth
+            //   variant="outlined"
+            //   size="small" // Adjust the size of the TextField
+            // />
+          )}
         </Grid>
       </Grid>
     </div>
