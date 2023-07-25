@@ -61,7 +61,13 @@ const ImageUploader: React.FC = () => {
     <div style={{height: "70vh", width: "100%", overflowY: "scroll"}}>
       <Grid container spacing={2}>
         {/* First Grid Item */}
-        <Grid item xs={6} container alignItems="center" justifyContent="center">
+        <Grid
+          item
+          xs={12}
+          container
+          alignItems="center"
+          justifyContent="center"
+        >
           <input
             accept="image/*"
             id="image-upload"
@@ -70,7 +76,11 @@ const ImageUploader: React.FC = () => {
             onChange={handleImageChange}
           />
           <label htmlFor="image-upload">
-            <Button variant="contained" component="span">
+            <Button
+              variant="contained"
+              component="span"
+              style={{marginRight: "1.5rem"}}
+            >
               {loading ? (
                 <CircularProgress size={24} color="inherit" />
               ) : (
@@ -78,10 +88,10 @@ const ImageUploader: React.FC = () => {
               )}
             </Button>
           </label>
-        </Grid>
+          {/* </Grid> */}
 
-        {/* Second Grid Item */}
-        <Grid item xs={6} container alignItems="center" justifyContent="center">
+          {/* Second Grid Item */}
+          {/* <Grid item xs={6} container alignItems="center" justifyContent="center"> */}
           {selectedImage && (
             <Typography
               variant="body1"
