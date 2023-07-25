@@ -58,7 +58,7 @@ const ImageUploader: React.FC = () => {
   };
 
   return (
-    <div style={{height: "70vh", overflowY: "scroll"}}>
+    <div style={{height: "70vh", width: "100%", overflowY: "scroll"}}>
       <Grid container spacing={2}>
         {/* First Grid Item */}
         <Grid item xs={6} container alignItems="center" justifyContent="center">
@@ -109,7 +109,7 @@ const ImageUploader: React.FC = () => {
                 <img
                   src={selectedImage}
                   alt="Uploaded"
-                  style={{maxWidth: "60%", width: "50vw"}}
+                  style={{maxWidth: "100%", width: "100%"}}
                 />
               </div>
             </Grid>
@@ -117,15 +117,6 @@ const ImageUploader: React.FC = () => {
         </Grid>
         <Grid item xs={6}>
           {textResult && (
-            // <TextField
-            //   id="outlined-multiline-static"
-            //   label="Multiline"
-            //   value={textResult}
-            //   multiline
-            //   rows={4}
-            //   defaultValue="Default Value"
-            // />
-
             <TextField
               id="outlined-multiline-static"
               label="Multiline"
@@ -135,19 +126,10 @@ const ImageUploader: React.FC = () => {
               defaultValue="Default Value"
               variant="outlined"
               style={{
-                width: "50vw",
-                height: "50vh",
+                width: "100%",
+                height: "100%",
               }}
             />
-
-            // <TextField
-            //   label="Text Result"
-            //   multiline
-            //   value={textResult}
-            //   fullWidth
-            //   variant="outlined"
-            //   size="small" // Adjust the size of the TextField
-            // />
           )}
         </Grid>
       </Grid>
