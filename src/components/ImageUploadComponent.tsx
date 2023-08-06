@@ -132,7 +132,7 @@ const ImageUploader: React.FC = () => {
         </Grid>
         <Grid item xs={6}>
           <pre>{textResult}</pre>
-          {textResult && (
+          {/* {textResult && (
             <TextField
               id="outlined-multiline-static"
               label="Multiline"
@@ -146,7 +146,7 @@ const ImageUploader: React.FC = () => {
                 height: "100%",
               }}
             />
-          )}
+          )} */}
         </Grid>
       </Grid>
     </div>

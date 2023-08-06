@@ -4,7 +4,7 @@ async function fetchData(prompt: string) {
   const headers: AxiosRequestConfig["headers"] = {
     "Content-Type": "application/json",
     Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2OTEzMzgzODUsImV4cCI6MTY5MTM0MTk4NX0.xQZXsnyDktEkdWrmSyS1HxguOnSsqxHWVuGx595Yppo",
+      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2OTEzNTY0ODAsImV4cCI6MTY5MTM2MDA4MH0.ReePP2VfPJt5tlom0iLwQJdzQ9yd5dke59ImqsHWm5g",
   };
 
   const requestOptions: AxiosRequestConfig = {
@@ -19,11 +19,11 @@ async function fetchData(prompt: string) {
   };
 
   try {
-    console.log("requestOptions", requestOptions);
+    //    console.log("requestOptions", requestOptions);
 
     const response: AxiosResponse = await axios(requestOptions);
 
-    console.log("response", response);
+    //   console.log("response", response);
     const result: string = response.data;
     return JSON.parse(result);
   } catch (error) {
