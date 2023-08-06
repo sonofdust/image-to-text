@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import openAiService from "../services/openAiService";
 import {
   Button,
   CircularProgress,
@@ -11,6 +12,7 @@ import {
   Box,
 } from "@mui/material";
 import {createWorker, ImageLike} from "tesseract.js";
+import {encode} from "punycode";
 
 const Item = styled(Paper)(({theme}) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -43,7 +45,10 @@ const ImageUploader: React.FC = () => {
         await workerInstance.loadLanguage("eng");
         await workerInstance.initialize("eng");
         const {data} = await workerInstance.recognize(img as ImageLike);
-        setTextResult(data.text);
+        const result = await openAiService(data.text);
+        //setTextResult();
+        setTextResult(JSON.stringify(result));
+
         setLoading(false);
       };
     }
@@ -126,6 +131,7 @@ const ImageUploader: React.FC = () => {
           )}
         </Grid>
         <Grid item xs={6}>
+          <pre>{textResult}</pre>
           {textResult && (
             <TextField
               id="outlined-multiline-static"
