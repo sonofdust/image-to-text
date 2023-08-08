@@ -4,7 +4,7 @@ async function fetchData(prompt: string) {
   const headers: AxiosRequestConfig["headers"] = {
     "Content-Type": "application/json",
     Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2OTEzNTY0ODAsImV4cCI6MTY5MTM2MDA4MH0.ReePP2VfPJt5tlom0iLwQJdzQ9yd5dke59ImqsHWm5g",
+      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2OTE0MTc1MjAsImV4cCI6MTY5MTQyMTEyMH0.MZiAaAzcvE7-obpcH5mj3ACNw5IWOV4wrx9sPX-H37I",
   };
 
   const requestOptions: AxiosRequestConfig = {

@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from "react";
 import openAiService from "../services/openAiService";
+import timerService from "../services/timerService";
+
 import {
   Button,
   CircularProgress,
@@ -26,9 +28,11 @@ const ImageUploader: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [textResult, setTextResult] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-
+  const [seconds, setSeconds] = useState<number>(0);
+  //  const timeObj = new timerService();
   useEffect(() => {
     convertImageToText();
+    setSeconds(0);
   }, [selectedImage]);
 
   const worker = createWorker();
@@ -45,9 +49,12 @@ const ImageUploader: React.FC = () => {
         await workerInstance.loadLanguage("eng");
         await workerInstance.initialize("eng");
         const {data} = await workerInstance.recognize(img as ImageLike);
+        timerService.start();
         const result = await openAiService(data.text);
         //setTextResult();
+
         setTextResult(JSON.stringify(result));
+        setSeconds(timerService.end() as number);
 
         setLoading(false);
       };
@@ -131,6 +138,7 @@ const ImageUploader: React.FC = () => {
           )}
         </Grid>
         <Grid item xs={6}>
+          <label>Seconds: {seconds}</label>
           <pre>{textResult}</pre>
           {/* {textResult && (
             <TextField
