@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useContext} from "react";
 import openAiService from "../services/openAiService";
 import {
   Button,
@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import {createWorker, ImageLike} from "tesseract.js";
 import {encode} from "punycode";
+import {AppContext, AppContextType} from "../App";
 
 const Item = styled(Paper)(({theme}) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -23,9 +24,18 @@ const Item = styled(Paper)(({theme}) => ({
 }));
 
 const ImageUploader: React.FC = () => {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [textResult, setTextResult] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const {
+    selectedImage,
+    setSelectedImage,
+    textResult,
+    setTextResult,
+    loading,
+    setLoading,
+  } = useContext(AppContext) as AppContextType; // Use the context
+
+  useEffect(() => {
+    convertImageToText();
+  }, [selectedImage]);
 
   useEffect(() => {
     convertImageToText();
