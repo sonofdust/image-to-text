@@ -14,6 +14,7 @@ import {
 import {createWorker, ImageLike} from "tesseract.js";
 import {encode} from "punycode";
 import {AppContext, AppContextType} from "../App";
+import timerService from "services/timerService";
 
 const Item = styled(Paper)(({theme}) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -32,6 +33,7 @@ const ImageUploader: React.FC = () => {
     loading,
     setLoading,
   } = useContext(AppContext) as AppContextType; // Use the context
+  const [seconds, setSeconds] = useState<number>(0);
 
   useEffect(() => {
     convertImageToText();
