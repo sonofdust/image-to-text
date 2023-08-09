@@ -1,10 +1,9 @@
 import axios, {AxiosRequestConfig, AxiosResponse} from "axios";
 
-async function fetchData(prompt: string) {
+async function fetchData(prompt: string, authKey: string | null) {
   const headers: AxiosRequestConfig["headers"] = {
     "Content-Type": "application/json",
-    Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2OTE1NDM4OTIsImV4cCI6MTY5MTU0NzQ5Mn0.oNwYdDWQ2DpTUjsmN0G53GuaGnuUzJEBF40TUFLX-ng",
+    Authorization: `Bearer ${authKey}`,
   };
 
   const requestOptions: AxiosRequestConfig = {

@@ -1,5 +1,6 @@
 import React, {useEffect, useState, useContext} from "react";
 import openAiService from "../services/openAiService";
+import timerService from "../services/timerService";
 import {
   Button,
   CircularProgress,
@@ -14,7 +15,6 @@ import {
 import {createWorker, ImageLike} from "tesseract.js";
 import {encode} from "punycode";
 import {AppContext, AppContextType} from "../App";
-import timerService from "services/timerService";
 
 const Item = styled(Paper)(({theme}) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -32,10 +32,15 @@ const ImageUploader: React.FC = () => {
     setTextResult,
     loading,
     setLoading,
+    token,
   } = useContext(AppContext) as AppContextType; // Use the context
   const [seconds, setSeconds] = useState<number>(0);
 
   useEffect(() => {
+    // if (!!token) {
+    //   setSelectedImage("");
+    // }
+
     convertImageToText();
   }, [selectedImage]);
 
@@ -56,8 +61,11 @@ const ImageUploader: React.FC = () => {
         const workerInstance = await worker;
         await workerInstance.loadLanguage("eng");
         await workerInstance.initialize("eng");
+        timerService.start();
+        setSeconds(0);
         const {data} = await workerInstance.recognize(img as ImageLike);
-        const result = await openAiService(data.text);
+        const result = await openAiService(data.text, token);
+        setSeconds(timerService.end() as number);
         //setTextResult();
         setTextResult(JSON.stringify(result));
 
@@ -143,6 +151,7 @@ const ImageUploader: React.FC = () => {
           )}
         </Grid>
         <Grid item xs={6}>
+          <label>{seconds}</label>
           <pre>{textResult}</pre>
           {/* {textResult && (
             <TextField

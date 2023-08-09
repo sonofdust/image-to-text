@@ -1,6 +1,13 @@
-import React, {createContext, useContext, useState} from "react";
+import React, {createContext, useContext, useEffect, useState} from "react";
 import ImageUploader from "./components/ImageUploadComponent";
 import NavBar from "./components/NavBar";
+// import {
+//   getToken,
+//   setToken,
+//   removeToken,
+//   decodeToken,
+// } from "./services/authService";
+import useLocalStorage from "./hooks/useLocalStorage";
 
 export interface AppContextType {
   selectedImage: string | null;
@@ -9,6 +16,8 @@ export interface AppContextType {
   setTextResult: React.Dispatch<React.SetStateAction<string | null>>;
   loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  token: string | null;
+  setToken: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -19,6 +28,14 @@ function App() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [textResult, setTextResult] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [token, setToken] = useLocalStorage(
+    "AUTH_KEY",
+    localStorage.getItem("AUTH_KEY")
+  );
+  // useEffect(() => {
+  //   console.log("MY TOKEN:  ", token);
+  //   setToken(token);
+  // }, [token]);
 
   const appContextValues: AppContextType = {
     selectedImage,
@@ -27,6 +44,8 @@ function App() {
     setTextResult,
     loading,
     setLoading,
+    token,
+    setToken,
   };
 
   return (
@@ -39,16 +58,8 @@ function App() {
           alignItems: "center",
         }}
       >
-        <NavBar
-          isAuthenticated={false}
-          onLogin={(email: string, password: string): void => {
-            throw new Error("Function not implemented.");
-          }}
-          onLogout={(): void => {
-            throw new Error("Function not implemented.");
-          }}
-        />
-        <ImageUploader />
+        <NavBar />
+        {!!token ? <ImageUploader /> : undefined}
       </div>
     </AppContext.Provider>
   );

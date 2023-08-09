@@ -1,4 +1,5 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
+import {login} from "../services/logInService";
 import {
   AppBar,
   Toolbar,
@@ -10,18 +11,9 @@ import {
   TextField,
 } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import {AppContext, AppContextType} from "../App";
 
-interface NavBarProps {
-  isAuthenticated: boolean;
-  onLogin: (email: string, password: string) => void;
-  onLogout: () => void;
-}
-
-const NavBar: React.FC<NavBarProps> = ({
-  isAuthenticated,
-  onLogin,
-  onLogout,
-}) => {
+const NavBar: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,17 +22,20 @@ const NavBar: React.FC<NavBarProps> = ({
     setAnchorEl(event.currentTarget);
   };
 
+  const {token, setToken} = useContext(AppContext) as AppContextType; // Use the context
+
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
 
-  const handleLogin = () => {
-    onLogin(email, password);
+  const handleLogin = async () => {
+    setToken(await login(email, password));
     handleMenuClose();
   };
 
   const handleLogout = () => {
-    onLogout();
+    // Removed onLogout();
+    setToken(null);
     handleMenuClose();
   };
 
@@ -50,7 +45,7 @@ const NavBar: React.FC<NavBarProps> = ({
         <Typography variant="h6" style={{flexGrow: 1}}>
           ZOOMLY
         </Typography>
-        {isAuthenticated ? (
+        {token ? (
           <>
             <IconButton
               edge="end"
