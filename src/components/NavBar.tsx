@@ -79,6 +79,7 @@ const NavBar: React.FC = () => {
             <Button color="inherit" onClick={handleMenuOpen}>
               Login
             </Button>
+            {/* <Button variant="contained">Create Account</Button> */}
             <Menu
               id="menu-appbar"
               anchorEl={anchorEl}
