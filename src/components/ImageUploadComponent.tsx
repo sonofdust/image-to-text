@@ -1,6 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useContext} from "react";
 import openAiService from "../services/openAiService";
 import timerService from "../services/timerService";
+import Progress from "./Loading";
 
 import {
   Button,
@@ -15,6 +16,7 @@ import {
 } from "@mui/material";
 import {createWorker, ImageLike} from "tesseract.js";
 import {encode} from "punycode";
+import {AppContext, AppContextType} from "../App";
 
 const Item = styled(Paper)(({theme}) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -25,11 +27,27 @@ const Item = styled(Paper)(({theme}) => ({
 }));
 
 const ImageUploader: React.FC = () => {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [textResult, setTextResult] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const {
+    selectedImage,
+    setSelectedImage,
+    textResult,
+    setTextResult,
+    loading,
+    setLoading,
+    token,
+    // setScrolling,
+    // isScrolling,
+  } = useContext(AppContext) as AppContextType; // Use the context
   const [seconds, setSeconds] = useState<number>(0);
-  //  const timeObj = new timerService();
+
+  useEffect(() => {
+    // if (!!token) {
+    //   setSelectedImage("");
+    // }
+
+    convertImageToText();
+  }, [selectedImage]);
+
   useEffect(() => {
     convertImageToText();
     setSeconds(0);
@@ -48,9 +66,11 @@ const ImageUploader: React.FC = () => {
         const workerInstance = await worker;
         await workerInstance.loadLanguage("eng");
         await workerInstance.initialize("eng");
-        const {data} = await workerInstance.recognize(img as ImageLike);
         timerService.start();
-        const result = await openAiService(data.text);
+        setSeconds(0);
+        const {data} = await workerInstance.recognize(img as ImageLike);
+        const result = await openAiService(data.text, token);
+        setSeconds(timerService.end() as number);
         //setTextResult();
 
         setTextResult(JSON.stringify(result));
@@ -69,10 +89,16 @@ const ImageUploader: React.FC = () => {
     }
   };
 
-  return (
-    <div style={{height: "70vh", width: "100%", overflowY: "scroll"}}>
+  const body = () => (
+    <div
+      style={{
+        height: "70vh",
+        width: "100%",
+        overflowY: "scroll",
+        paddingTop: "10rem",
+      }}
+    >
       <Grid container spacing={2}>
-        {/* First Grid Item */}
         <Grid
           item
           xs={12}
@@ -100,10 +126,8 @@ const ImageUploader: React.FC = () => {
               )}
             </Button>
           </label>
-          {/* </Grid> */}
 
           {/* Second Grid Item */}
-          {/* <Grid item xs={6} container alignItems="center" justifyContent="center"> */}
           {selectedImage && (
             <Typography
               variant="body1"
@@ -138,27 +162,14 @@ const ImageUploader: React.FC = () => {
           )}
         </Grid>
         <Grid item xs={6}>
-          <label>Seconds: {seconds}</label>
+          <label>{seconds}</label>
           <pre>{textResult}</pre>
-          {/* {textResult && (
-            <TextField
-              id="outlined-multiline-static"
-              label="Multiline"
-              value={textResult}
-              multiline
-              rows={4}
-              defaultValue="Default Value"
-              variant="outlined"
-              style={{
-                width: "100%",
-                height: "100%",
-              }}
-            />
-          )} */}
         </Grid>
       </Grid>
     </div>
   );
+
+  return loading ? <Progress /> : body();
 };
 
 export default ImageUploader;

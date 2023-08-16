@@ -19,7 +19,8 @@
     "baseUrl": "./",
     "paths": {
       "*": ["src/*"],
-      "node_modules/*": ["node_modules/*"]
+      "node_modules/*": ["node_modules/*"],
+      "@material-ui/core/*": ["../node_modules/@material-ui/core/*"]
     }
   },
   "include": ["src"]
