@@ -40,18 +40,9 @@ const ImageUploader: React.FC = () => {
   } = useContext(AppContext) as AppContextType; // Use the context
   const [seconds, setSeconds] = useState<number>(0);
 
-  useEffect(() => {
-    // if (!!token) {
-    //   setSelectedImage("");
-    // }
-
-    convertImageToText();
-  }, [selectedImage]);
-
-  useEffect(() => {
-    convertImageToText();
-    setSeconds(0);
-  }, [selectedImage]);
+  // useEffect(() => {
+  //   convertImageToText();
+  // }, [selectedImage]);
 
   const worker = createWorker();
 
@@ -119,11 +110,18 @@ const ImageUploader: React.FC = () => {
               component="span"
               style={{marginRight: "1.5rem"}}
             >
-              {loading ? (
-                <CircularProgress size={24} color="inherit" />
-              ) : (
-                "Upload Image"
-              )}
+              "Upload Image"
+            </Button>
+          </label>
+
+          <label htmlFor="image-upload">
+            <Button
+              variant="contained"
+              component="span"
+              style={{marginRight: "1.5rem"}}
+              onClick={convertImageToText}
+            >
+              "Parse Image"
             </Button>
           </label>
 

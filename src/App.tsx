@@ -16,8 +16,10 @@ export interface AppContextType {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   token: string | null;
   setToken: React.Dispatch<React.SetStateAction<string | null>>;
-  // isScrolling: boolean;
-  // setScrolling: React.Dispatch<React.SetStateAction<boolean>>;
+  email: string;
+  setEmail: React.Dispatch<React.SetStateAction<string>>;
+  password: string;
+  setPassword: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -30,9 +32,11 @@ function App() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [textResult, setTextResult] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
   const [token, setToken] = useLocalStorage("AUTH_KEY", "");
   // const [isScrolling, setScrolling] = useState<boolean>(false);
-
   //  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(false);
   useEffect(() => {
     try {
@@ -49,6 +53,10 @@ function App() {
     setLoading,
     token,
     setToken,
+    setEmail,
+    email,
+    setPassword,
+    password,
   };
 
   return (
