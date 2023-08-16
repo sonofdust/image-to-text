@@ -8,9 +8,6 @@ import {
   Paper,
   Typography,
   Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
 } from "@material-ui/core";
 import {AppContext, AppContextType} from "../App";
 import {login} from "../services/logInService";
@@ -29,11 +26,16 @@ const useStyles = makeStyles({
 const Login: React.FC = () => {
   const classes = useStyles();
 
-  const {setToken, token, setLoading, loading} = useContext(
-    AppContext
-  ) as AppContextType; // Use the context
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const {
+    setToken,
+    token,
+    setLoading,
+    loading,
+    email,
+    setEmail,
+    password,
+    setPassword,
+  } = useContext(AppContext) as AppContextType; // Use the context
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
