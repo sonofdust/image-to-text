@@ -1,16 +1,20 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
 import {Button, TextField, Grid, Paper, Typography} from "@material-ui/core";
+import {AppContext, AppContextType} from "../App";
 
-interface UserProfileFormProps {
-  onSubmit: (email: string, password: string) => void;
-}
+// interface UserProfileFormProps {
+//   onSubmit: (email: string, password: string) => void;
+// }
 
-const UserProfileForm: React.FC<UserProfileFormProps> = ({onSubmit}) => {
+const UserProfileForm: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [verifyPassword, setVerifyPassword] = useState<string>("");
   const [passwordMismatch, setPasswordMismatch] = useState<boolean>(true);
   const [emailError, setEmailError] = useState<string>("");
+  const {token, setToken, setLoading} = useContext(
+    AppContext
+  ) as AppContextType; // Use the context
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newEmail = event.target.value;
@@ -42,7 +46,7 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({onSubmit}) => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     if (password === verifyPassword && emailError === "") {
-      onSubmit(email, password);
+      //      onSubmit(email, password);
     } else {
       // Handle password mismatch or email validation error
       console.log("Form submission failed");

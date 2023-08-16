@@ -37,9 +37,21 @@ const Login: React.FC = () => {
     setPassword,
   } = useContext(AppContext) as AppContextType; // Use the context
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [emailError, setEmailError] = useState<string>("");
+
+  //   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //     setEmail(event.target.value);
+  //   };
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
+    const newEmail = event.target.value;
+    setEmail(newEmail);
+    // Validate email format
+    if (!/^\S+@\S+\.\S+$/.test(newEmail)) {
+      setEmailError("Invalid email format");
+    } else {
+      setEmailError("");
+    }
   };
 
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,6 +90,8 @@ const Login: React.FC = () => {
                   fullWidth
                   value={email}
                   onChange={handleEmailChange}
+                  error={emailError !== ""}
+                  helperText={emailError}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -98,6 +112,7 @@ const Login: React.FC = () => {
                   color="primary"
                   fullWidth
                   onClick={handleLogin}
+                  disabled={!!emailError}
                 >
                   Log In
                 </Button>
@@ -120,9 +135,9 @@ const Login: React.FC = () => {
       )}
       <Dialog open={openModal} onClose={() => setOpenModal(false)}>
         <UserProfileForm
-          onSubmit={function (email: string, password: string): void {
-            throw new Error("Function not implemented.");
-          }}
+        //   onSubmit={function (email: string, password: string): void {
+        //     throw new Error("Function not implemented.");
+        //   }}
         />
       </Dialog>
     </div>
