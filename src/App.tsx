@@ -1,13 +1,11 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
 import ImageUploader from "./components/ImageUploadComponent";
 import NavBar from "./components/NavBar";
-// import {
-//   getToken,
-//   setToken,
-//   removeToken,
-//   decodeToken,
-// } from "./services/authService";
+import Login from "./components/Login";
+import {expired} from "./services/logInService";
 import useLocalStorage from "./hooks/useLocalStorage";
+import exp from "constants";
+import {Box, CircularProgress} from "@mui/material";
 
 export interface AppContextType {
   selectedImage: string | null;
@@ -18,24 +16,29 @@ export interface AppContextType {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   token: string | null;
   setToken: React.Dispatch<React.SetStateAction<string | null>>;
+  // isScrolling: boolean;
+  // setScrolling: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
 
 function App() {
+  // const classes = useStyles();
+
   const [jwt, setJwt] = useState<string>("");
 
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [textResult, setTextResult] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [token, setToken] = useLocalStorage(
-    "AUTH_KEY",
-    localStorage.getItem("AUTH_KEY")
-  );
-  // useEffect(() => {
-  //   console.log("MY TOKEN:  ", token);
-  //   setToken(token);
-  // }, [token]);
+  const [token, setToken] = useLocalStorage("AUTH_KEY", "");
+  // const [isScrolling, setScrolling] = useState<boolean>(false);
+
+  //  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(false);
+  useEffect(() => {
+    try {
+      console.log("KEY:  ", localStorage.getItem("AUTH_KEY"));
+    } catch (e: any) {}
+  });
 
   const appContextValues: AppContextType = {
     selectedImage,
@@ -50,17 +53,16 @@ function App() {
 
   return (
     <AppContext.Provider value={appContextValues}>
-      <div
-        style={{
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <NavBar />
-        {!!token ? <ImageUploader /> : undefined}
-      </div>
+      {!!token ? (
+        <>
+          <div>
+            <NavBar />
+            <ImageUploader />
+          </div>
+        </>
+      ) : (
+        <Login />
+      )}
     </AppContext.Provider>
   );
 }

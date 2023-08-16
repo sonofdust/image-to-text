@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import {AppContext, AppContextType} from "../App";
+import {LocalLaundryService} from "@material-ui/icons";
 
 const NavBar: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -22,20 +23,29 @@ const NavBar: React.FC = () => {
     setAnchorEl(event.currentTarget);
   };
 
-  const {token, setToken} = useContext(AppContext) as AppContextType; // Use the context
+  //  const {token, setToken, setIsLoggedIn} = useContext(
+  const {token, setToken, setLoading} = useContext(
+    AppContext
+  ) as AppContextType; // Use the context
 
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
 
-  const handleLogin = async () => {
-    setToken(await login(email, password));
-    handleMenuClose();
-  };
+  // const handleLogin = async () => {
+  //   setToken(await login(email, password));
+  //   handleMenuClose();
+  // };
 
   const handleLogout = () => {
     // Removed onLogout();
+    //    console.log("Logging out");
+    localStorage.removeItem("AUTH_KEY");
+    //    console.log("STORAGE: ", localStorage.getItem("AUTH_KEY"));
     setToken(null);
+    //    setIsLoggedIn(false);
+    setLoading(false);
+
     handleMenuClose();
   };
 
@@ -45,86 +55,35 @@ const NavBar: React.FC = () => {
         <Typography variant="h6" style={{flexGrow: 1}}>
           ZOOMLY
         </Typography>
-        {token ? (
-          <>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-haspopup="true"
-              onClick={handleMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorEl)}
-              onClose={handleMenuClose}
-            >
-              <MenuItem onClick={handleLogout}>Logout</MenuItem>
-            </Menu>
-          </>
-        ) : (
-          <>
-            <Button color="inherit" onClick={handleMenuOpen}>
-              Login
-            </Button>
-            {/* <Button variant="contained">Create Account</Button> */}
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorEl)}
-              onClose={handleMenuClose}
-            >
-              <div style={{padding: "16px", minWidth: "200px"}}>
-                <TextField
-                  label="Email"
-                  variant="outlined"
-                  fullWidth
-                  value={email}
-                  onChange={(e: any) => setEmail(e.target.value)}
-                />
-                <TextField
-                  label="Password"
-                  variant="outlined"
-                  type="password"
-                  fullWidth
-                  value={password}
-                  onChange={(e: any) => setPassword(e.target.value)}
-                  style={{marginTop: "16px"}}
-                />
-                <Button
-                  color="primary"
-                  variant="contained"
-                  fullWidth
-                  onClick={handleLogin}
-                  style={{marginTop: "16px"}}
-                >
-                  Login
-                </Button>
-              </div>
-            </Menu>
-          </>
-        )}
+        {/* {token ? ( */}
+        <>
+          <IconButton
+            edge="end"
+            aria-label="account of current user"
+            aria-haspopup="true"
+            onClick={handleMenuOpen}
+            color="inherit"
+          >
+            <AccountCircle />
+          </IconButton>
+          <Menu
+            id="menu-appbar"
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+          >
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+          </Menu>
+        </>
       </Toolbar>
     </AppBar>
   );

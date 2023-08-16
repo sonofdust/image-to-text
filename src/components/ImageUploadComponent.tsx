@@ -1,6 +1,8 @@
 import React, {useEffect, useState, useContext} from "react";
 import openAiService from "../services/openAiService";
 import timerService from "../services/timerService";
+import Progress from "./Loading";
+
 import {
   Button,
   CircularProgress,
@@ -33,6 +35,8 @@ const ImageUploader: React.FC = () => {
     loading,
     setLoading,
     token,
+    // setScrolling,
+    // isScrolling,
   } = useContext(AppContext) as AppContextType; // Use the context
   const [seconds, setSeconds] = useState<number>(0);
 
@@ -82,10 +86,16 @@ const ImageUploader: React.FC = () => {
     }
   };
 
-  return (
-    <div style={{height: "70vh", width: "100%", overflowY: "scroll"}}>
+  const body = () => (
+    <div
+      style={{
+        height: "70vh",
+        width: "100%",
+        overflowY: "scroll",
+        paddingTop: "10rem",
+      }}
+    >
       <Grid container spacing={2}>
-        {/* First Grid Item */}
         <Grid
           item
           xs={12}
@@ -113,10 +123,8 @@ const ImageUploader: React.FC = () => {
               )}
             </Button>
           </label>
-          {/* </Grid> */}
 
           {/* Second Grid Item */}
-          {/* <Grid item xs={6} container alignItems="center" justifyContent="center"> */}
           {selectedImage && (
             <Typography
               variant="body1"
@@ -153,25 +161,12 @@ const ImageUploader: React.FC = () => {
         <Grid item xs={6}>
           <label>{seconds}</label>
           <pre>{textResult}</pre>
-          {/* {textResult && (
-            <TextField
-              id="outlined-multiline-static"
-              label="Multiline"
-              value={textResult}
-              multiline
-              rows={4}
-              defaultValue="Default Value"
-              variant="outlined"
-              style={{
-                width: "100%",
-                height: "100%",
-              }}
-            />
-          )} */}
         </Grid>
       </Grid>
     </div>
   );
+
+  return loading ? <Progress /> : body();
 };
 
 export default ImageUploader;
