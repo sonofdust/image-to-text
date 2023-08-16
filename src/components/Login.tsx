@@ -7,11 +7,15 @@ import {
   Grid,
   Paper,
   Typography,
-  CircularProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@material-ui/core";
 import {AppContext, AppContextType} from "../App";
 import {login} from "../services/logInService";
 import {makeStyles} from "@material-ui/core/styles";
+import UserProfileForm from "./UserProfileForm";
 
 const useStyles = makeStyles({
   center: {
@@ -25,12 +29,12 @@ const useStyles = makeStyles({
 const Login: React.FC = () => {
   const classes = useStyles();
 
-  //  const {setIsLoggedIn, setToken, token} = useContext(
   const {setToken, token, setLoading, loading} = useContext(
     AppContext
   ) as AppContextType; // Use the context
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -45,12 +49,12 @@ const Login: React.FC = () => {
     setLoading(true);
     setToken(await login(email, password));
     setLoading(false);
-    //    setIsLoggedIn(!!token);
   };
 
   const handleCreateProfile = (event: any) => {
     event.preventDefault();
     // Handle create profile logic here
+    setOpenModal(true);
     console.log("Creating profile with:", email, password);
   };
   return (
@@ -112,6 +116,13 @@ const Login: React.FC = () => {
           </form>
         </Paper>
       )}
+      <Dialog open={openModal} onClose={() => setOpenModal(false)}>
+        <UserProfileForm
+          onSubmit={function (email: string, password: string): void {
+            throw new Error("Function not implemented.");
+          }}
+        />
+      </Dialog>
     </div>
   );
 };
